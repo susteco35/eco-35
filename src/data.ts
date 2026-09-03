@@ -40,7 +40,7 @@ export type JourneyPoint = {
 };
 
 export const MEMBERS: Member[] = [
-  { id: 'm1', name: 'Ayesha Rahman', photo: 'https://images.pexels.com/photos/36271927/pexels-photo-36271927.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
+  { id: 'm1', name: 'Mizanur Rahman', photo: 'https://drive.google.com/file/d/1jo3ucp7ujuQyZpfBh10r4wGFz1nbf4dT/view?usp=drive_link', facebook: 'https://www.facebook.com/profile.php?id=100070251546730' },
   { id: 'm2', name: 'Tanvir Ahmed', photo: 'https://images.pexels.com/photos/5042302/pexels-photo-5042302.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
   { id: 'm3', name: 'Nusrat Jahan', photo: 'https://images.pexels.com/photos/35725749/pexels-photo-35725749.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
   { id: 'm4', name: 'Rafiul Karim', photo: 'https://images.pexels.com/photos/29881401/pexels-photo-29881401.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
