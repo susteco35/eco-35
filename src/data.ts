@@ -1,0 +1,156 @@
+// Central data file for ECO 35 — SUST.
+// Member and event data can later be connected from a Google Form / Google Sheet
+// by replacing the arrays below with a fetch + mapping of the same shape.
+//
+// Google Sheets-ready JSON shape:
+//   members:  [{ id, name, avatar, facebook }]
+//   gallery:  [{ id, category, imageUrl, caption }]
+//   events:   [{ id, name, category, date, cover, photos: [url,...] }]
+
+export type Member = {
+  id: string;
+  name: string;
+  photo: string; // avatar image URL
+  facebook: string;
+};
+
+export type EventCategory = 'Tour' | 'Sports' | 'Cultural Program' | 'Achievement' | 'Others';
+
+export type BatchEvent = {
+  id: string;
+  name: string;
+  category: EventCategory;
+  date: string;
+  cover: string;
+  photos: string[];
+};
+
+export type GalleryPhoto = {
+  id: string;
+  src: string; // imageUrl
+  category: EventCategory;
+  caption: string;
+  span?: boolean; // larger tile in masonry
+};
+
+export type JourneyPoint = {
+  year: string;
+  title: string;
+  description: string;
+};
+
+export const MEMBERS: Member[] = [
+  { id: 'm1', name: 'Ayesha Rahman', photo: 'https://images.pexels.com/photos/36271927/pexels-photo-36271927.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
+  { id: 'm2', name: 'Tanvir Ahmed', photo: 'https://images.pexels.com/photos/5042302/pexels-photo-5042302.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
+  { id: 'm3', name: 'Nusrat Jahan', photo: 'https://images.pexels.com/photos/35725749/pexels-photo-35725749.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
+  { id: 'm4', name: 'Rafiul Karim', photo: 'https://images.pexels.com/photos/29881401/pexels-photo-29881401.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
+  { id: 'm5', name: 'Sadia Islam', photo: 'https://images.pexels.com/photos/13784287/pexels-photo-13784287.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
+  { id: 'm6', name: 'Mehedi Hasan', photo: 'https://images.pexels.com/photos/749091/pexels-photo-749091.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
+  { id: 'm7', name: 'Farhana Akter', photo: 'https://images.pexels.com/photos/36271952/pexels-photo-36271952.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
+  { id: 'm8', name: 'Sakib Chowdhury', photo: 'https://images.pexels.com/photos/5514779/pexels-photo-5514779.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
+  { id: 'm9', name: 'Tasnim Hossain', photo: 'https://images.pexels.com/photos/20831795/pexels-photo-20831795.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
+  { id: 'm10', name: 'Imran Khan', photo: 'https://images.pexels.com/photos/24017554/pexels-photo-24017554.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
+  { id: 'm11', name: 'Maliha Tabassum', photo: 'https://images.pexels.com/photos/10794938/pexels-photo-10794938.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
+  { id: 'm12', name: 'Arif Hossain', photo: 'https://images.pexels.com/photos/3353607/pexels-photo-3353607.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
+];
+
+export const EVENTS: BatchEvent[] = [
+  {
+    id: 'e1',
+    name: 'Batch Tour',
+    category: 'Tour',
+    date: 'A journey beyond the classroom, together.',
+    cover: 'https://images.pexels.com/photos/5622140/pexels-photo-5622140.jpeg?auto=compress&cs=tinysrgb&w=900',
+    photos: [
+      'https://images.pexels.com/photos/9455226/pexels-photo-9455226.jpeg?auto=compress&cs=tinysrgb&w=900',
+      'https://images.pexels.com/photos/13999669/pexels-photo-13999669.jpeg?auto=compress&cs=tinysrgb&w=900',
+      'https://images.pexels.com/photos/16004719/pexels-photo-16004719.jpeg?auto=compress&cs=tinysrgb&w=900',
+      'https://images.pexels.com/photos/5622140/pexels-photo-5622140.jpeg?auto=compress&cs=tinysrgb&w=900',
+      'https://images.pexels.com/photos/4641122/pexels-photo-4641122.jpeg?auto=compress&cs=tinysrgb&w=900',
+    ],
+  },
+  {
+    id: 'e2',
+    name: 'Sports Day',
+    category: 'Sports',
+    date: 'Where our batch brought the spirit of the game.',
+    cover: 'https://images.pexels.com/photos/13509805/pexels-photo-13509805.jpeg?auto=compress&cs=tinysrgb&w=900',
+    photos: [
+      'https://images.pexels.com/photos/36293965/pexels-photo-36293965.jpeg?auto=compress&cs=tinysrgb&w=900',
+      'https://images.pexels.com/photos/35903110/pexels-photo-35903110.jpeg?auto=compress&cs=tinysrgb&w=900',
+      'https://images.pexels.com/photos/37169804/pexels-photo-37169804.jpeg?auto=compress&cs=tinysrgb&w=900',
+      'https://images.pexels.com/photos/13509805/pexels-photo-13509805.jpeg?auto=compress&cs=tinysrgb&w=900',
+    ],
+  },
+  {
+    id: 'e3',
+    name: 'Cultural Night',
+    category: 'Cultural Program',
+    date: 'Music, dance and the colours of our culture.',
+    cover: 'https://images.pexels.com/photos/12327992/pexels-photo-12327992.jpeg?auto=compress&cs=tinysrgb&w=900',
+    photos: [
+      'https://images.pexels.com/photos/35244385/pexels-photo-35244385.jpeg?auto=compress&cs=tinysrgb&w=900',
+      'https://images.pexels.com/photos/11787164/pexels-photo-11787164.jpeg?auto=compress&cs=tinysrgb&w=900',
+      'https://images.pexels.com/photos/8566097/pexels-photo-8566097.jpeg?auto=compress&cs=tinysrgb&w=900',
+      'https://images.pexels.com/photos/11927030/pexels-photo-11927030.jpeg?auto=compress&cs=tinysrgb&w=900',
+    ],
+  },
+  {
+    id: 'e4',
+    name: 'Achievement Night',
+    category: 'Achievement',
+    date: 'Celebrating the milestones our batch reached together.',
+    cover: 'https://images.pexels.com/photos/10435675/pexels-photo-10435675.jpeg?auto=compress&cs=tinysrgb&w=900',
+    photos: [
+      'https://images.pexels.com/photos/29707905/pexels-photo-29707905.jpeg?auto=compress&cs=tinysrgb&w=900',
+      'https://images.pexels.com/photos/15093007/pexels-photo-15093007.jpeg?auto=compress&cs=tinysrgb&w=900',
+      'https://images.pexels.com/photos/10435675/pexels-photo-10435675.jpeg?auto=compress&cs=tinysrgb&w=900',
+    ],
+  },
+  {
+    id: 'e5',
+    name: 'Batch Reunion',
+    category: 'Others',
+    date: 'Coming together once more, where the memories never fade.',
+    cover: 'https://images.pexels.com/photos/5638817/pexels-photo-5638817.jpeg?auto=compress&cs=tinysrgb&w=900',
+    photos: [
+      'https://images.pexels.com/photos/5638820/pexels-photo-5638820.jpeg?auto=compress&cs=tinysrgb&w=900',
+      'https://images.pexels.com/photos/3937193/pexels-photo-3937193.jpeg?auto=compress&cs=tinysrgb&w=900',
+      'https://images.pexels.com/photos/8775169/pexels-photo-8775169.jpeg?auto=compress&cs=tinysrgb&w=900',
+      'https://images.pexels.com/photos/36799186/pexels-photo-36799186.jpeg?auto=compress&cs=tinysrgb&w=900',
+    ],
+  },
+];
+
+export const GALLERY: GalleryPhoto[] = [
+  { id: 'g1', src: 'https://images.pexels.com/photos/5622140/pexels-photo-5622140.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Tour', caption: 'On the road together', span: true },
+  { id: 'g2', src: 'https://images.pexels.com/photos/13509805/pexels-photo-13509805.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Sports', caption: 'Game day spirit' },
+  { id: 'g3', src: 'https://images.pexels.com/photos/10435675/pexels-photo-10435675.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Achievement', caption: 'Trophies earned' },
+  { id: 'g4', src: 'https://images.pexels.com/photos/9455226/pexels-photo-9455226.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Tour', caption: 'Campfire stories' },
+  { id: 'g5', src: 'https://images.pexels.com/photos/36293965/pexels-photo-36293965.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Sports', caption: 'Cricket in the sun' },
+  { id: 'g6', src: 'https://images.pexels.com/photos/15093007/pexels-photo-15093007.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Achievement', caption: 'Holding the diploma', span: true },
+  { id: 'g7', src: 'https://images.pexels.com/photos/13999669/pexels-photo-13999669.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Tour', caption: 'Stream side rest' },
+  { id: 'g8', src: 'https://images.pexels.com/photos/29707905/pexels-photo-29707905.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Achievement', caption: 'A row of trophies' },
+  { id: 'g9', src: 'https://images.pexels.com/photos/35244385/pexels-photo-35244385.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Cultural Program', caption: 'Traditional dance' },
+  { id: 'g10', src: 'https://images.pexels.com/photos/35903110/pexels-photo-35903110.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Sports', caption: 'A clean strike' },
+  { id: 'g11', src: 'https://images.pexels.com/photos/11787164/pexels-photo-11787164.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Cultural Program', caption: 'On the stage' },
+  { id: 'g12', src: 'https://images.pexels.com/photos/16004719/pexels-photo-16004719.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Tour', caption: 'Evening by the fire' },
+  { id: 'g13', src: 'https://images.pexels.com/photos/8566097/pexels-photo-8566097.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Cultural Program', caption: 'Kathakali performance' },
+  { id: 'g14', src: 'https://images.pexels.com/photos/5638817/pexels-photo-5638817.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Others', caption: 'Evening together' },
+  { id: 'g15', src: 'https://images.pexels.com/photos/37169804/pexels-photo-37169804.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Sports', caption: 'Bat in hand' },
+  { id: 'g16', src: 'https://images.pexels.com/photos/3937193/pexels-photo-3937193.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Others', caption: 'A warm dinner' },
+];
+
+export const JOURNEY: JourneyPoint[] = [
+  { year: '2025', title: 'Our Beginning', description: 'The first time we gathered as a batch — new faces, new hopes, and the start of a shared journey.' },
+  { year: '2026', title: 'Growing Together', description: 'Late-night study sessions, first friendships, and the quiet confidence of finding our place.' },
+  { year: '2027', title: 'Creating Memories', description: 'Tours, cultural nights and endless conversations that turned classmates into family.' },
+  { year: '2028', title: 'Looking Ahead', description: 'A chapter still being written — one we will carry with us long after we leave these halls.' },
+];
+
+export const STATS = [
+  { label: 'Batch Members', value: 120, suffix: '+' },
+  { label: 'Events', value: 15, suffix: '+' },
+  { label: 'Memories', value: 500, suffix: '+' },
+  { label: 'Family', value: 1, suffix: '' },
+];
