@@ -8,10 +8,10 @@
 //   events:   [{ id, name, category, date, cover, photos: [url,...] }]
 
 export type Member = {
-  id: string;
-  name: string;
-  photo: string; // avatar image URL
-  facebook: string;
+  id: m1;
+  name: MIZANUR RAHMAN;
+  photo: https://drive.google.com/file/d/1jo3ucp7ujuQyZpfBh10r4wGFz1nbf4dT/view?usp=drive_link
+  facebook: https://www.facebook.com/profile.php?id=100070251546730;
 };
 
 export type EventCategory = 'Tour' | 'Sports' | 'Cultural Program' | 'Achievement' | 'Others';
