@@ -2,9 +2,8 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { fileURLToPath, URL } from 'node:url';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  base: '/sust-eco-35/',
+  base: '/eco-35/',
   plugins: [react()],
   resolve: {
     alias: {
