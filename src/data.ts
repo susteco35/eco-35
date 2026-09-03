@@ -40,11 +40,11 @@ export type JourneyPoint = {
 };
 
 export const MEMBERS: Member[] = [
-  { id: 'm1', name: 'Mizanur Rahman', photo: 'https://drive.google.com/file/d/1jo3ucp7ujuQyZpfBh10r4wGFz1nbf4dT/view?usp=drive_link', facebook: 'https://www.facebook.com/profile.php?id=100070251546730' },
-  { id: 'm2', name: 'Tanvir Ahmed', photo: 'https://images.pexels.com/photos/5042302/pexels-photo-5042302.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
-  { id: 'm3', name: 'Nusrat Jahan', photo: 'https://images.pexels.com/photos/35725749/pexels-photo-35725749.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
-  { id: 'm4', name: 'Rafiul Karim', photo: 'https://images.pexels.com/photos/29881401/pexels-photo-29881401.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
-  { id: 'm5', name: 'Sadia Islam', photo: 'https://images.pexels.com/photos/13784287/pexels-photo-13784287.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
+  { id: 'm1', name: 'MIZANUR RAHMAN', photo: 'https://drive.google.com/file/d/1jo3ucp7ujuQyZpfBh10r4wGFz1nbf4dT/view?usp=drive_link', facebook: 'https://www.facebook.com/profile.php?id=100070251546730' },
+  { id: 'm2', name: 'MASUMA AKTER LISA', photo: 'https://drive.google.com/file/d/1ZYwhSTSyoE9V_8pF8jsjTFG7rDcnI-v_/view?usp=forms_web', facebook: 'https://www.facebook.com/share/19Gp8HGEX8/' },
+  { id: 'm3', name: 'Hasanul Banna Sami', photo: 'https://drive.google.com/file/d/1TRLl3Q5mcM3WC-4AGj7266d2PDBv8iVu/view', facebook: 'www.facebook.com/hb.sami1411' },
+  { id: 'm4', name: 'MD ROTON ISLAM ', photo: 'https://drive.google.com/file/d/1vVsYkKWMyN_SmYNI-C1g61JoFlyRmwkc/view', facebook: 'https://www.facebook.com/muhammad.sayeed.islam.2025' },
+  { id: 'm5', name: 'Md. Mostafijur Rahman ', photo: 'https://drive.google.com/file/d/10zRPZwIBa7WZHAxbBQrNqUph7TvXf1r8/view', facebook: 'https://www.facebook.com/mostafiz.z.467797?mibextid=rS40aB7S9Ucbxw6v' },
   { id: 'm6', name: 'Mehedi Hasan', photo: 'https://images.pexels.com/photos/749091/pexels-photo-749091.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
   { id: 'm7', name: 'Farhana Akter', photo: 'https://images.pexels.com/photos/36271952/pexels-photo-36271952.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
   { id: 'm8', name: 'Sakib Chowdhury', photo: 'https://images.pexels.com/photos/5514779/pexels-photo-5514779.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop', facebook: 'https://facebook.com' },
