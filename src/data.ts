@@ -35,7 +35,7 @@ export const MEMBERS: Member[] = [
   {
     id: 'm5',
     name: 'Md. Mostafijur Rahman',
-    photo: 'https://drive.google.com/file/d/10zRPZwIBa7WZHAxbBQrNqUph7TvXf1r8/viewক',
+    photo: 'https://drive.google.com/file/d/10zRPZwIBa7WZHAxbBQrNqUph7TvXf1r8/view',
     facebook: 'https://www.facebook.com/mostafiz.z.467797?mibextid=rS40aB7S9Ucbxw6v'
   },
 ];
