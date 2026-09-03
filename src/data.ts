@@ -7,12 +7,38 @@
 //   gallery:  [{ id, category, imageUrl, caption }]
 //   events:   [{ id, name, category, date, cover, photos: [url,...] }]
 
-export type Member = {
-  id: m1;
-  name: MIZANUR RAHMAN;
-  photo: https://drive.google.com/file/d/1jo3ucp7ujuQyZpfBh10r4wGFz1nbf4dT/view?usp=drive_link
-  facebook: https://www.facebook.com/profile.php?id=100070251546730;
-};
+export const MEMBERS: Member[] = [
+  {
+    id: 'm1',
+    name: 'MIZANUR RAHMAN',
+    photo: 'https://drive.google.com/file/d/1jo3ucp7ujuQyZpfBh10r4wGFz1nbf4dT/view?usp=drive_link',
+    facebook: 'https://www.facebook.com/profile.php?id=100070251546730'
+  },
+  {
+    id: 'm2',
+    name: 'MASUMA AKTER LISA',
+    photo: 'https://drive.google.com/file/d/1ZYwhSTSyoE9V_8pF8jsjTFG7rDcnI-v_/view?usp=forms_web',
+    facebook: 'https://www.facebook.com/profile.php?id=100070251546730'
+  },
+  {
+    id: 'm3',
+    name: 'Hasanul Banna Sami',
+    photo: 'https://drive.google.com/file/d/1TRLl3Q5mcM3WC-4AGj7266d2PDBv8iVu/view',
+    facebook: 'www.facebook.com/hb.sami1411'
+  },
+  {
+    id: 'm4',
+    name: 'MD ROTON ISLAM',
+    photo: 'https://drive.google.com/file/d/1vVsYkKWMyN_SmYNI-C1g61JoFlyRmwkc/view',
+    facebook: 'https://www.facebook.com/muhammad.sayeed.islam.2025'
+  },
+  {
+    id: 'm5',
+    name: 'Md. Mostafijur Rahman',
+    photo: 'https://drive.google.com/file/d/10zRPZwIBa7WZHAxbBQrNqUph7TvXf1r8/viewক',
+    facebook: 'https://www.facebook.com/mostafiz.z.467797?mibextid=rS40aB7S9Ucbxw6v'
+  },
+];
 
 export type EventCategory = 'Tour' | 'Sports' | 'Cultural Program' | 'Achievement' | 'Others';
 
