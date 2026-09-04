@@ -3,6 +3,7 @@ import { Search, Facebook, ArrowRight } from 'lucide-react';
 
 const API_URL =
   'https://script.google.com/macros/s/AKfycby_TaZ5e0jWmNQkM6I8J34TIIe5rEURekFojtj1rDQMugdhct-E4rGxymuREAf5mNAQhg/exec';
+
 type Member = {
   id: string;
   name: string;
@@ -11,11 +12,68 @@ type Member = {
   linkedin: string;
 };
 
+/* =========================================================
+   GOOGLE DRIVE IMAGE URL HANDLER
+   ========================================================= */
+
+const getDriveFileId = (url: string): string | null => {
+  if (!url) return null;
+
+  // thumbnail?id=FILE_ID
+  const thumbnailMatch = url.match(/[?&]id=([^&]+)/);
+  if (thumbnailMatch?.[1]) {
+    return thumbnailMatch[1];
+  }
+
+  // /d/FILE_ID/
+  const fileIdMatch = url.match(/\/d\/([^/]+)/);
+  if (fileIdMatch?.[1]) {
+    return fileIdMatch[1];
+  }
+
+  // open?id=FILE_ID
+  const openMatch = url.match(/id=([^&]+)/);
+  if (openMatch?.[1]) {
+    return openMatch[1];
+  }
+
+  return null;
+};
+
+const getImageUrl = (url: string): string => {
+  if (!url?.trim()) return '';
+
+  const cleanUrl = url.trim();
+  const fileId = getDriveFileId(cleanUrl);
+
+  if (!fileId) {
+    return cleanUrl;
+  }
+
+  // Primary Google Drive thumbnail URL
+  return `https://drive.google.com/thumbnail?id=${fileId}&sz=w500`;
+};
+
+const getFallbackImageUrl = (url: string): string => {
+  const fileId = getDriveFileId(url);
+
+  if (!fileId) {
+    return url;
+  }
+
+  // Fallback Google Drive image URL
+  return `https://drive.google.com/uc?export=view&id=${fileId}`;
+};
+
 export default function Members() {
   const [members, setMembers] = useState<Member[]>([]);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  /* =========================================================
+     LOAD MEMBERS
+     ========================================================= */
 
   useEffect(() => {
     const loadMembers = async () => {
@@ -72,6 +130,10 @@ export default function Members() {
     loadMembers();
   }, []);
 
+  /* =========================================================
+     SEARCH
+     ========================================================= */
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
 
@@ -84,11 +146,16 @@ export default function Members() {
     );
   }, [query, members]);
 
+  /* =========================================================
+     UI
+     ========================================================= */
+
   return (
     <section id="members" className="section-pad relative">
       <div className="container-px mx-auto">
 
         {/* ================= HEADER ================= */}
+
         <div className="reveal mx-auto max-w-2xl text-center">
           <span className="eyebrow">
             Our People
@@ -106,6 +173,7 @@ export default function Members() {
         </div>
 
         {/* ================= SEARCH ================= */}
+
         <div className="reveal mx-auto mt-10 max-w-md">
           <div className="relative">
 
@@ -126,6 +194,7 @@ export default function Members() {
         </div>
 
         {/* ================= LOADING ================= */}
+
         {loading && (
           <div className="mt-12 text-center">
             <p className="text-sm text-slatey-400">
@@ -135,6 +204,7 @@ export default function Members() {
         )}
 
         {/* ================= ERROR ================= */}
+
         {!loading && error && (
           <div className="mt-12 text-center">
             <p className="text-sm text-red-500">
@@ -143,26 +213,58 @@ export default function Members() {
           </div>
         )}
 
-        {/* ================= MEMBERS GRID ================= */}
+        {/* ================= MEMBERS ================= */}
+
         {!loading && !error && (
           <>
             <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-6">
 
               {filtered.map((member) => (
+
                 <article
                   key={member.id}
-className="group card-surface flex flex-col items-center p-5 text-center transition-all duration-500 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-navy-900/10"                >
+                  className="group card-surface flex flex-col items-center p-5 text-center transition-all duration-500 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-navy-900/10"
+                >
 
                   {/* ================= PHOTO ================= */}
+
                   <div className="relative">
 
                     <div className="overflow-hidden rounded-full ring-2 ring-gold-500/40 transition-all duration-500 group-hover:ring-gold-500">
 
                       {member.photo ? (
                         <img
-                          src={member.photo}
+                          src={getImageUrl(member.photo)}
                           alt={member.name}
                           loading="lazy"
+                          referrerPolicy="no-referrer"
+                          onError={(e) => {
+                            const img = e.currentTarget;
+
+                            const fallback =
+                              getFallbackImageUrl(member.photo);
+
+                            // Try fallback only once
+                            if (
+                              img.src !== fallback &&
+                              fallback
+                            ) {
+                              img.src = fallback;
+                            } else {
+                              img.style.display = 'none';
+
+                              const parent =
+                                img.parentElement;
+
+                              if (parent) {
+                                parent.innerHTML = `
+                                  <div class="flex h-20 w-20 items-center justify-center bg-slatey-100 text-xs text-slatey-400 sm:h-24 sm:w-24">
+                                    No Photo
+                                  </div>
+                                `;
+                              }
+                            }
+                          }}
                           className="h-20 w-20 object-cover grayscale-[0.2] transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0 sm:h-24 sm:w-24"
                         />
                       ) : (
@@ -176,11 +278,13 @@ className="group card-surface flex flex-col items-center p-5 text-center transit
                   </div>
 
                   {/* ================= NAME ================= */}
+
                   <h3 className="mt-4 font-display text-base font-medium text-navy-900 dark:text-white sm:text-lg">
                     {member.name}
                   </h3>
 
                   {/* ================= FACEBOOK ================= */}
+
                   {member.facebook && (
                     <a
                       href={member.facebook}
@@ -195,7 +299,8 @@ className="group card-surface flex flex-col items-center p-5 text-center transit
                   )}
 
                   {/* ================= LINKEDIN ================= */}
-                  {member.linkedin?.trim() && (
+
+                  {member.linkedin && (
                     <a
                       href={member.linkedin}
                       target="_blank"
@@ -212,11 +317,13 @@ className="group card-surface flex flex-col items-center p-5 text-center transit
                   )}
 
                 </article>
+
               ))}
 
             </div>
 
             {/* ================= NO RESULTS ================= */}
+
             {filtered.length === 0 && (
               <p className="mt-12 text-center text-sm text-slatey-400 dark:text-slatey-500">
                 No members found for &ldquo;{query}&rdquo;.
@@ -226,6 +333,7 @@ className="group card-surface flex flex-col items-center p-5 text-center transit
         )}
 
         {/* ================= VIEW ALL ================= */}
+
         <div className="reveal mt-12 text-center">
           <a
             href="#gallery"
