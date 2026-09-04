@@ -16,41 +16,72 @@ export default function Members() {
   const [members, setMembers] = useState<Member[]>([]);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch(API_URL)
-      .then((res) => res.json())
-      .then((data) => {
-        const formattedMembers: Member[] = data.map(
-          (item: any, index: number) => ({
+    const loadMembers = async () => {
+      try {
+        setLoading(true);
+        setError('');
+
+        const response = await fetch(API_URL);
+
+        if (!response.ok) {
+          throw new Error(`API request failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        console.log('Google Sheets API data:', data);
+
+        if (!Array.isArray(data)) {
+          throw new Error('API did not return an array');
+        }
+
+        const formattedMembers: Member[] = data
+          .map((item: any, index: number) => ({
             id: `member-${index + 1}`,
 
-            name: item['Full Name'] || '',
+            name: String(item['Full Name'] || '').trim(),
 
-            photo: item['Profile Photo'] || '',
+            photo: String(item['Profile Photo'] || '').trim(),
 
-            facebook: item['Facebook Profile Link'] || '',
+            facebook: String(
+              item['Facebook Profile Link'] || ''
+            ).trim(),
 
-            linkedin: item['LinkedIn Profile Link (optional).']?.trim() || '',
-          })
-        );
+            linkedin: String(
+              item['LinkedIn Profile Link (optional).'] || ''
+            ).trim(),
+          }))
+          .filter((member) => member.name);
+
+        console.log('Formatted members:', formattedMembers);
 
         setMembers(formattedMembers);
+      } catch (err) {
+        console.error('Failed to load members:', err);
+
+        setError(
+          'Unable to load members right now. Please try again later.'
+        );
+      } finally {
         setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Failed to load members:', error);
-        setLoading(false);
-      });
+      }
+    };
+
+    loadMembers();
   }, []);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
 
-    if (!q) return members;
+    if (!q) {
+      return members;
+    }
 
-    return members.filter((m) =>
-      m.name.toLowerCase().includes(q)
+    return members.filter((member) =>
+      member.name.toLowerCase().includes(q)
     );
   }, [query, members]);
 
@@ -58,9 +89,11 @@ export default function Members() {
     <section id="members" className="section-pad relative">
       <div className="container-px mx-auto">
 
-        {/* Header */}
+        {/* ================= HEADER ================= */}
         <div className="reveal mx-auto max-w-2xl text-center">
-          <span className="eyebrow">Our People</span>
+          <span className="eyebrow">
+            Our People
+          </span>
 
           <h2 className="mt-4 heading-display text-4xl text-navy-900 sm:text-5xl dark:text-white">
             Meet Our Batch
@@ -73,10 +106,13 @@ export default function Members() {
           </p>
         </div>
 
-        {/* Search */}
+        {/* ================= SEARCH ================= */}
         <div className="reveal mx-auto mt-10 max-w-md">
           <div className="relative">
-            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slatey-400" />
+
+            <Search
+              className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slatey-400"
+            />
 
             <input
               type="search"
@@ -86,91 +122,118 @@ export default function Members() {
               aria-label="Search members"
               className="w-full rounded-full border border-slatey-200 bg-white py-3 pl-11 pr-4 text-sm text-navy-900 shadow-sm outline-none transition-all placeholder:text-slatey-400 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 dark:border-navy-700 dark:bg-navy-800/60 dark:text-white dark:placeholder:text-slatey-500"
             />
+
           </div>
         </div>
 
-        {/* Loading */}
+        {/* ================= LOADING ================= */}
         {loading && (
-          <p className="mt-12 text-center text-sm text-slatey-400">
-            Loading members...
-          </p>
-        )}
-
-        {/* Grid */}
-        {!loading && (
-          <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-6">
-
-            {filtered.map((m) => (
-              <article
-                key={m.id}
-                className="reveal group card-surface flex flex-col items-center p-5 text-center transition-all duration-500 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-navy-900/10"
-              >
-
-                {/* Profile Photo */}
-                <div className="relative">
-                  <div className="overflow-hidden rounded-full ring-2 ring-gold-500/40 transition-all duration-500 group-hover:ring-gold-500">
-                    <img
-                      src={m.photo}
-                      alt={m.name}
-                      loading="lazy"
-                      className="h-20 w-20 object-cover grayscale-[0.2] transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0 sm:h-24 sm:w-24"
-                    />
-                  </div>
-                </div>
-
-                {/* Name */}
-                <h3 className="mt-4 font-display text-base font-medium text-navy-900 dark:text-white sm:text-lg">
-                  {m.name}
-                </h3>
-
-                {/* Facebook */}
-                {m.facebook?.trim() && (
-                  <a
-                    href={m.facebook}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${m.name} on Facebook`}
-                    className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-slatey-200 px-3.5 py-1.5 text-xs font-semibold text-slatey-600 transition-all hover:border-[#1877f2] hover:bg-[#1877f2] hover:text-white dark:border-navy-700 dark:text-slatey-300 dark:hover:border-[#1877f2] dark:hover:bg-[#1877f2] dark:hover:text-white"
-                  >
-                    <Facebook className="h-3 w-3" />
-                    Facebook
-                  </a>
-                )}
-
-                {/* LinkedIn */}
-                {m.linkedin?.trim() && (
-                  <a
-                    href={m.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${m.name} on LinkedIn`}
-                    className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-slatey-200 px-3.5 py-1.5 text-xs font-semibold text-slatey-600 transition-all hover:border-[#0A66C2] hover:bg-[#0A66C2] hover:text-white dark:border-navy-700 dark:text-slatey-300 dark:hover:border-[#0A66C2] dark:hover:bg-[#0A66C2] dark:hover:text-white"
-                  >
-                    <span className="font-bold">in</span>
-                    LinkedIn
-                  </a>
-                )}
-
-              </article>
-            ))}
-
+          <div className="mt-12 text-center">
+            <p className="text-sm text-slatey-400">
+              Loading members...
+            </p>
           </div>
         )}
 
-        {/* No results */}
-        {!loading && filtered.length === 0 && (
-          <p className="mt-12 text-center text-sm text-slatey-400 dark:text-slatey-500">
-            No members found for &ldquo;{query}&rdquo;.
-          </p>
+        {/* ================= ERROR ================= */}
+        {!loading && error && (
+          <div className="mt-12 text-center">
+            <p className="text-sm text-red-500">
+              {error}
+            </p>
+          </div>
         )}
 
-        {/* View all */}
+        {/* ================= MEMBERS GRID ================= */}
+        {!loading && !error && (
+          <>
+            <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-6">
+
+              {filtered.map((member) => (
+                <article
+                  key={member.id}
+className="group card-surface flex flex-col items-center p-5 text-center transition-all duration-500 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-navy-900/10"                >
+
+                  {/* ================= PHOTO ================= */}
+                  <div className="relative">
+
+                    <div className="overflow-hidden rounded-full ring-2 ring-gold-500/40 transition-all duration-500 group-hover:ring-gold-500">
+
+                      {member.photo ? (
+                        <img
+                          src={member.photo}
+                          alt={member.name}
+                          loading="lazy"
+                          className="h-20 w-20 object-cover grayscale-[0.2] transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0 sm:h-24 sm:w-24"
+                        />
+                      ) : (
+                        <div className="flex h-20 w-20 items-center justify-center bg-slatey-100 text-xs text-slatey-400 sm:h-24 sm:w-24">
+                          No Photo
+                        </div>
+                      )}
+
+                    </div>
+
+                  </div>
+
+                  {/* ================= NAME ================= */}
+                  <h3 className="mt-4 font-display text-base font-medium text-navy-900 dark:text-white sm:text-lg">
+                    {member.name}
+                  </h3>
+
+                  {/* ================= FACEBOOK ================= */}
+                  {member.facebook && (
+                    <a
+                      href={member.facebook}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${member.name} on Facebook`}
+                      className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-slatey-200 px-3.5 py-1.5 text-xs font-semibold text-slatey-600 transition-all hover:border-[#1877f2] hover:bg-[#1877f2] hover:text-white dark:border-navy-700 dark:text-slatey-300 dark:hover:border-[#1877f2] dark:hover:bg-[#1877f2] dark:hover:text-white"
+                    >
+                      <Facebook className="h-3 w-3" />
+                      Facebook
+                    </a>
+                  )}
+
+                  {/* ================= LINKEDIN ================= */}
+                  {member.linkedin?.trim() && (
+                    <a
+                      href={member.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${member.name} on LinkedIn`}
+                      className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-slatey-200 px-3.5 py-1.5 text-xs font-semibold text-slatey-600 transition-all hover:border-[#0A66C2] hover:bg-[#0A66C2] hover:text-white dark:border-navy-700 dark:text-slatey-300 dark:hover:border-[#0A66C2] dark:hover:bg-[#0A66C2] dark:hover:text-white"
+                    >
+                      <span className="font-bold">
+                        in
+                      </span>
+
+                      LinkedIn
+                    </a>
+                  )}
+
+                </article>
+              ))}
+
+            </div>
+
+            {/* ================= NO RESULTS ================= */}
+            {filtered.length === 0 && (
+              <p className="mt-12 text-center text-sm text-slatey-400 dark:text-slatey-500">
+                No members found for &ldquo;{query}&rdquo;.
+              </p>
+            )}
+          </>
+        )}
+
+        {/* ================= VIEW ALL ================= */}
         <div className="reveal mt-12 text-center">
           <a
             href="#gallery"
             className="group inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-navy-700 transition-colors hover:text-gold-600 dark:text-slatey-300 dark:hover:text-gold-400"
           >
             View All Members
+
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </a>
         </div>
