@@ -3,7 +3,6 @@ import { Search, Facebook, ArrowRight } from 'lucide-react';
 
 const API_URL =
   'https://script.google.com/macros/s/AKfycby_TaZ5e0jWmNQkM6I8J34TIIe5rEURekFojtj1rDQMugdhct-E4rGxymuREAf5mNAQhg/exec';
-
 type Member = {
   id: string;
   name: string;
