@@ -12,68 +12,11 @@ type Member = {
   linkedin: string;
 };
 
-/* =========================================================
-   GOOGLE DRIVE IMAGE URL HANDLER
-   ========================================================= */
-
-const getDriveFileId = (url: string): string | null => {
-  if (!url) return null;
-
-  // thumbnail?id=FILE_ID
-  const thumbnailMatch = url.match(/[?&]id=([^&]+)/);
-  if (thumbnailMatch?.[1]) {
-    return thumbnailMatch[1];
-  }
-
-  // /d/FILE_ID/
-  const fileIdMatch = url.match(/\/d\/([^/]+)/);
-  if (fileIdMatch?.[1]) {
-    return fileIdMatch[1];
-  }
-
-  // open?id=FILE_ID
-  const openMatch = url.match(/id=([^&]+)/);
-  if (openMatch?.[1]) {
-    return openMatch[1];
-  }
-
-  return null;
-};
-
-const getImageUrl = (url: string): string => {
-  if (!url?.trim()) return '';
-
-  const cleanUrl = url.trim();
-  const fileId = getDriveFileId(cleanUrl);
-
-  if (!fileId) {
-    return cleanUrl;
-  }
-
-  // Primary Google Drive thumbnail URL
-  return `https://drive.google.com/thumbnail?id=${fileId}&sz=w500`;
-};
-
-const getFallbackImageUrl = (url: string): string => {
-  const fileId = getDriveFileId(url);
-
-  if (!fileId) {
-    return url;
-  }
-
-  // Fallback Google Drive image URL
-  return `https://drive.google.com/uc?export=view&id=${fileId}`;
-};
-
 export default function Members() {
   const [members, setMembers] = useState<Member[]>([]);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
-  /* =========================================================
-     LOAD MEMBERS
-     ========================================================= */
 
   useEffect(() => {
     const loadMembers = async () => {
@@ -95,25 +38,137 @@ export default function Members() {
           throw new Error('API did not return an array');
         }
 
+        // =========================
+        // ROBUST FIELD MAPPER
+        // =========================
+        const getField = (
+          item: Record<string, any>,
+          ...possibleNames: string[]
+        ): string => {
+          const key = Object.keys(item).find((originalKey) => {
+            const normalizedKey = originalKey
+              .trim()
+              .toLowerCase()
+              .replace(/\s+/g, ' ');
+
+            return possibleNames.some((possibleName) => {
+              const normalizedName = possibleName
+                .trim()
+                .toLowerCase()
+                .replace(/\s+/g, ' ');
+
+              return normalizedKey === normalizedName;
+            });
+          });
+
+          return key ? String(item[key] ?? '').trim() : '';
+        };
+
+        // =========================
+        // GOOGLE DRIVE IMAGE URL
+        // =========================
+        const convertPhotoUrl = (url: string): string => {
+          if (!url) return '';
+
+          let cleanUrl = url.trim();
+
+          // Google Drive thumbnail URL
+          if (cleanUrl.includes('drive.google.com/thumbnail')) {
+            return cleanUrl;
+          }
+
+          // Google Drive open URL
+          const openMatch = cleanUrl.match(
+            /drive\.google\.com\/open\?id=([^&]+)/i
+          );
+
+          if (openMatch?.[1]) {
+            return `https://drive.google.com/thumbnail?id=${openMatch[1]}&sz=w500`;
+          }
+
+          // Google Drive file URL
+          const fileMatch = cleanUrl.match(
+            /drive\.google\.com\/file\/d\/([^/]+)/i
+          );
+
+          if (fileMatch?.[1]) {
+            return `https://drive.google.com/thumbnail?id=${fileMatch[1]}&sz=w500`;
+          }
+
+          // Google Drive uc URL
+          const ucMatch = cleanUrl.match(
+            /drive\.google\.com\/uc\?[^#]*id=([^&]+)/i
+          );
+
+          if (ucMatch?.[1]) {
+            return `https://drive.google.com/thumbnail?id=${ucMatch[1]}&sz=w500`;
+          }
+
+          return cleanUrl;
+        };
+
+        // =========================
+        // FORMAT MEMBERS
+        // =========================
         const formattedMembers: Member[] = data
-          .map((item: any, index: number) => ({
-            id: `member-${index + 1}`,
+          .map((item: Record<string, any>, index: number) => {
+            const name = getField(
+              item,
+              'Full Name',
+              'Full name',
+              'Name'
+            );
 
-            name: String(item['Full Name'] || '').trim(),
+            const rawPhoto = getField(
+              item,
+              'Profile Photo',
+              'Profile photo',
+              'Photo',
+              'Profile Picture',
+              'Photo URL'
+            );
 
-            photo: String(item['Profile Photo'] || '').trim(),
+            const photo = convertPhotoUrl(rawPhoto);
 
-            facebook: String(
-              item['Facebook Profile Link'] || ''
-            ).trim(),
+            const facebook = getField(
+              item,
+              'Facebook Profile Link',
+              'Facebook Profile Link ',
+              'Facebook Link',
+              'Facebook'
+            );
 
-            linkedin: String(
-              item['LinkedIn Profile Link (optional).'] || ''
-            ).trim(),
-          }))
+            const linkedin = getField(
+              item,
+              'LinkedIn Profile Link (optional).',
+              'LinkedIn Profile Link (optional)',
+              'LinkedIn Profile Link',
+              'LinkedIn Link',
+              'LinkedIn'
+            );
+
+            console.log('Member:', {
+              name,
+              rawPhoto,
+              photo,
+              facebook,
+              linkedin,
+            });
+
+            return {
+              id: `member-${index + 1}`,
+              name,
+              photo,
+              facebook,
+              linkedin,
+            };
+          })
           .filter((member) => member.name);
 
-        console.log('Formatted members:', formattedMembers);
+        console.log(
+          'Formatted members:',
+          formattedMembers
+        );
 
         setMembers(formattedMembers);
       } catch (err) {
@@ -130,10 +185,9 @@ export default function Members() {
     loadMembers();
   }, []);
 
-  /* =========================================================
-     SEARCH
-     ========================================================= */
-
+  // =========================
+  // SEARCH
+  // =========================
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
 
@@ -146,16 +200,14 @@ export default function Members() {
     );
   }, [query, members]);
 
-  /* =========================================================
-     UI
-     ========================================================= */
-
   return (
-    <section id="members" className="section-pad relative">
+    <section
+      id="members"
+      className="section-pad relative"
+    >
       <div className="container-px mx-auto">
 
         {/* ================= HEADER ================= */}
-
         <div className="reveal mx-auto max-w-2xl text-center">
           <span className="eyebrow">
             Our People
@@ -173,7 +225,6 @@ export default function Members() {
         </div>
 
         {/* ================= SEARCH ================= */}
-
         <div className="reveal mx-auto mt-10 max-w-md">
           <div className="relative">
 
@@ -184,7 +235,9 @@ export default function Members() {
             <input
               type="search"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) =>
+                setQuery(e.target.value)
+              }
               placeholder="Search your friend..."
               aria-label="Search members"
               className="w-full rounded-full border border-slatey-200 bg-white py-3 pl-11 pr-4 text-sm text-navy-900 shadow-sm outline-none transition-all placeholder:text-slatey-400 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 dark:border-navy-700 dark:bg-navy-800/60 dark:text-white dark:placeholder:text-slatey-500"
@@ -194,7 +247,6 @@ export default function Members() {
         </div>
 
         {/* ================= LOADING ================= */}
-
         {loading && (
           <div className="mt-12 text-center">
             <p className="text-sm text-slatey-400">
@@ -204,7 +256,6 @@ export default function Members() {
         )}
 
         {/* ================= ERROR ================= */}
-
         {!loading && error && (
           <div className="mt-12 text-center">
             <p className="text-sm text-red-500">
@@ -213,56 +264,46 @@ export default function Members() {
           </div>
         )}
 
-        {/* ================= MEMBERS ================= */}
-
+        {/* ================= MEMBERS GRID ================= */}
         {!loading && !error && (
           <>
             <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-6">
 
               {filtered.map((member) => (
-
                 <article
                   key={member.id}
                   className="group card-surface flex flex-col items-center p-5 text-center transition-all duration-500 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-navy-900/10"
                 >
 
                   {/* ================= PHOTO ================= */}
-
                   <div className="relative">
 
                     <div className="overflow-hidden rounded-full ring-2 ring-gold-500/40 transition-all duration-500 group-hover:ring-gold-500">
 
                       {member.photo ? (
                         <img
-                          src={getImageUrl(member.photo)}
+                          src={member.photo}
                           alt={member.name}
                           loading="lazy"
-                          referrerPolicy="no-referrer"
                           onError={(e) => {
-                            const img = e.currentTarget;
+                            console.error(
+                              'Image failed to load:',
+                              member.name,
+                              member.photo
+                            );
 
-                            const fallback =
-                              getFallbackImageUrl(member.photo);
+                            e.currentTarget.style.display =
+                              'none';
 
-                            // Try fallback only once
-                            if (
-                              img.src !== fallback &&
-                              fallback
-                            ) {
-                              img.src = fallback;
-                            } else {
-                              img.style.display = 'none';
+                            const parent =
+                              e.currentTarget.parentElement;
 
-                              const parent =
-                                img.parentElement;
-
-                              if (parent) {
-                                parent.innerHTML = `
-                                  <div class="flex h-20 w-20 items-center justify-center bg-slatey-100 text-xs text-slatey-400 sm:h-24 sm:w-24">
-                                    No Photo
-                                  </div>
-                                `;
-                              }
+                            if (parent) {
+                              parent.innerHTML = `
+                                <div class="flex h-20 w-20 items-center justify-center bg-slatey-100 text-xs text-slatey-400 sm:h-24 sm:w-24">
+                                  No Photo
+                                </div>
+                              `;
                             }
                           }}
                           className="h-20 w-20 object-cover grayscale-[0.2] transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0 sm:h-24 sm:w-24"
@@ -278,13 +319,11 @@ export default function Members() {
                   </div>
 
                   {/* ================= NAME ================= */}
-
                   <h3 className="mt-4 font-display text-base font-medium text-navy-900 dark:text-white sm:text-lg">
                     {member.name}
                   </h3>
 
                   {/* ================= FACEBOOK ================= */}
-
                   {member.facebook && (
                     <a
                       href={member.facebook}
@@ -299,7 +338,6 @@ export default function Members() {
                   )}
 
                   {/* ================= LINKEDIN ================= */}
-
                   {member.linkedin && (
                     <a
                       href={member.linkedin}
@@ -317,13 +355,11 @@ export default function Members() {
                   )}
 
                 </article>
-
               ))}
 
             </div>
 
             {/* ================= NO RESULTS ================= */}
-
             {filtered.length === 0 && (
               <p className="mt-12 text-center text-sm text-slatey-400 dark:text-slatey-500">
                 No members found for &ldquo;{query}&rdquo;.
@@ -333,7 +369,6 @@ export default function Members() {
         )}
 
         {/* ================= VIEW ALL ================= */}
-
         <div className="reveal mt-12 text-center">
           <a
             href="#gallery"
