@@ -223,6 +223,13 @@ export const GALLERY: GalleryPhoto[] = [
     caption: 'Together All boys as ECO 35',
     span: true,
   },
+  {
+    id: 'g5',
+    src: `${import.meta.env.BASE_URL}IMG-20250905-WA0668.jpg"`,
+    category: 'Others',
+    caption: 'Together All Girls as ECO 35',
+    span: true,
+  },
 ];
 export const STATS = [
   { label: 'Batch Members', value: 59, suffix: '' },
