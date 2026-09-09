@@ -8,9 +8,9 @@ import {
 } from 'lucide-react';
 
 const SLIDES = [
-  'https://images.pexels.com/photos/37755984/pexels-photo-37755984.jpeg?auto=compress&cs=tinysrgb&w=1600',
-  'https://images.pexels.com/photos/29248096/pexels-photo-29248096.jpeg?auto=compress&cs=tinysrgb&w=1600',
-  'https://images.pexels.com/photos/8199196/pexels-photo-8199196.jpeg?auto=compress&cs=tinysrgb&w=1600',
+  'https://picsum.photos/1600/900?random=1',
+  'https://picsum.photos/1600/900?random=2',
+  'https://picsum.photos/1600/900?random=3',
 ];
 
 export default function Hero() {
