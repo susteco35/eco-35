@@ -8,9 +8,9 @@ import {
 } from 'lucide-react';
 
 const SLIDES = [
-  'https://picsum.photos/1600/900?random=1',
-  'https://picsum.photos/1600/900?random=2',
-  'https://picsum.photos/1600/900?random=3',
+  `${import.meta.env.BASE_URL}IMG-20250905-WA0195.jpg`,
+  `${import.meta.env.BASE_URL}IMG-20250906-WA0368.jpg`,
+  `${import.meta.env.BASE_URL}IMG-20260707-WA0034.jpg`,
 ];
 
 export default function Hero() {
