@@ -222,7 +222,7 @@ export const JOURNEY: JourneyPoint[] = [
 ];
 
 export const STATS = [
-  { label: 'Batch Members', value: 120, suffix: '+' },
+  { label: 'Batch Members', value: 59, suffix: '' },
   { label: 'Events', value: 15, suffix: '+' },
   { label: 'Memories', value: 500, suffix: '+' },
   { label: 'Family', value: 1, suffix: '' },
