@@ -6,7 +6,46 @@ import {
   ChevronRight,
   ArrowRight,
 } from 'lucide-react';
-import { EVENTS, type BatchEvent } from '@/data';
+import { type BatchEvent } from '@/data';
+
+const EVENTS: BatchEvent[] = [
+  {
+    id: 'e1',
+    name: 'Batch Memories',
+    category: 'Tour',
+    date: 'Memories we created together.',
+    cover: `${import.meta.env.BASE_URL}IMG-20250905-WA0195.jpg`,
+    photos: [
+      `${import.meta.env.BASE_URL}IMG-20250905-WA0195.jpg`,
+      `${import.meta.env.BASE_URL}IMG-20250906-WA0368.jpg`,
+      `${import.meta.env.BASE_URL}IMG-20260707-WA0034.jpg`,
+    ],
+  },
+  {
+    id: 'e2',
+    name: 'Our Journey',
+    category: 'Tour',
+    date: 'Exploring, laughing and making memories together.',
+    cover: `${import.meta.env.BASE_URL}IMG-20250906-WA0368.jpg`,
+    photos: [
+      `${import.meta.env.BASE_URL}IMG-20250906-WA0368.jpg`,
+      `${import.meta.env.BASE_URL}IMG-20250905-WA0195.jpg`,
+      `${import.meta.env.BASE_URL}IMG-20260707-WA0034.jpg`,
+    ],
+  },
+  {
+    id: 'e3',
+    name: 'ECO 35 Together',
+    category: 'Others',
+    date: 'One batch, countless memories.',
+    cover: `${import.meta.env.BASE_URL}IMG-20260707-WA0034.jpg`,
+    photos: [
+      `${import.meta.env.BASE_URL}IMG-20260707-WA0034.jpg`,
+      `${import.meta.env.BASE_URL}IMG-20250905-WA0195.jpg`,
+      `${import.meta.env.BASE_URL}IMG-20250906-WA0368.jpg`,
+    ],
+  },
+];
 
 export default function Events() {
   const [active, setActive] = useState<BatchEvent | null>(null);
@@ -17,6 +56,7 @@ export default function Events() {
       className="section-pad relative bg-slatey-100/60 dark:bg-navy-800/30"
     >
       <div className="container-px mx-auto">
+
         {/* Header */}
         <div className="reveal mx-auto max-w-2xl text-center">
           <span className="eyebrow">Our Events</span>
@@ -32,7 +72,7 @@ export default function Events() {
           </p>
         </div>
 
-        {/* Grid */}
+        {/* Events Grid */}
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {EVENTS.map((ev) => (
             <article
@@ -40,6 +80,7 @@ export default function Events() {
               className="reveal group relative overflow-hidden rounded-2xl bg-navy-900 shadow-lg transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-gold-500/20 dark:bg-navy-800"
             >
               <div className="relative aspect-[4/3] overflow-hidden">
+
                 <img
                   src={ev.cover}
                   alt={ev.name}
@@ -53,11 +94,11 @@ export default function Events() {
                   {ev.category}
                 </span>
 
-                {/* Gold accent line */}
                 <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-gradient-to-r from-gold-400 to-gold-600 transition-all duration-500 group-hover:w-full" />
               </div>
 
-              <div className="absolute inset-x-0 bottom-0 p-5">
+              <div className="absolute bottom-0 inset-x-0 p-5">
+
                 <h3 className="font-display text-xl font-medium text-white">
                   {ev.name}
                 </h3>
@@ -73,12 +114,13 @@ export default function Events() {
                   <Images className="h-3.5 w-3.5" />
                   View Photos
                 </button>
+
               </div>
             </article>
           ))}
         </div>
 
-        {/* View all */}
+        {/* View All */}
         <div className="reveal mt-12 text-center">
           <a
             href="#gallery"
@@ -127,6 +169,7 @@ function EventLightbox({
       aria-modal="true"
       aria-label={`${event.name} photos`}
     >
+
       {/* Close */}
       <button
         onClick={onClose}
@@ -140,8 +183,10 @@ function EventLightbox({
         className="relative w-full max-w-4xl px-5"
         onClick={(e) => e.stopPropagation()}
       >
+
         {/* Title */}
         <div className="mb-4 text-center">
+
           <span className="text-[0.65rem] font-semibold uppercase tracking-widest2 text-gold-400">
             {event.category}
           </span>
@@ -153,10 +198,12 @@ function EventLightbox({
           <p className="mt-1 text-sm text-slatey-400">
             {event.date}
           </p>
+
         </div>
 
-        {/* Main image */}
+        {/* Main Photo */}
         <div className="relative overflow-hidden rounded-2xl">
+
           <img
             src={photos[idx]}
             alt={`${event.name} — photo ${idx + 1}`}
@@ -184,12 +231,14 @@ function EventLightbox({
               </button>
             </>
           )}
+
         </div>
 
         {/* Thumbnails */}
         {photos.length > 1 && (
           <div className="mt-4 flex flex-wrap justify-center gap-2">
-            {photos.map((photo, i) => (
+
+            {photos.map((p, i) => (
               <button
                 key={i}
                 onClick={() => setIdx(i)}
@@ -201,14 +250,16 @@ function EventLightbox({
                 }`}
               >
                 <img
-                  src={photo}
+                  src={p}
                   alt=""
                   className="h-full w-full object-cover"
                 />
               </button>
             ))}
+
           </div>
         )}
+
       </div>
     </div>
   );
