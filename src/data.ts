@@ -196,34 +196,56 @@ export const EVENTS: BatchEvent[] = [
 ];
 
 export const GALLERY: GalleryPhoto[] = [
-  { id: 'g1', src: 'https://images.pexels.com/photos/5622140/pexels-photo-5622140.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Tour', caption: 'On the road together', span: true },
-  { id: 'g2', src: 'https://images.pexels.com/photos/13509805/pexels-photo-13509805.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Sports', caption: 'Game day spirit' },
-  { id: 'g3', src: 'https://images.pexels.com/photos/10435675/pexels-photo-10435675.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Achievement', caption: 'Trophies earned' },
-  { id: 'g4', src: 'https://images.pexels.com/photos/9455226/pexels-photo-9455226.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Tour', caption: 'Campfire stories' },
-  { id: 'g5', src: 'https://images.pexels.com/photos/36293965/pexels-photo-36293965.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Sports', caption: 'Cricket in the sun' },
-  { id: 'g6', src: 'https://images.pexels.com/photos/15093007/pexels-photo-15093007.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Achievement', caption: 'Holding the diploma', span: true },
-  { id: 'g7', src: 'https://images.pexels.com/photos/13999669/pexels-photo-13999669.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Tour', caption: 'Stream side rest' },
-  { id: 'g8', src: 'https://images.pexels.com/photos/29707905/pexels-photo-29707905.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Achievement', caption: 'A row of trophies' },
-  { id: 'g9', src: 'https://images.pexels.com/photos/35244385/pexels-photo-35244385.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Cultural Program', caption: 'Traditional dance' },
-  { id: 'g10', src: 'https://images.pexels.com/photos/35903110/pexels-photo-35903110.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Sports', caption: 'A clean strike' },
-  { id: 'g11', src: 'https://images.pexels.com/photos/11787164/pexels-photo-11787164.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Cultural Program', caption: 'On the stage' },
-  { id: 'g12', src: 'https://images.pexels.com/photos/16004719/pexels-photo-16004719.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Tour', caption: 'Evening by the fire' },
-  { id: 'g13', src: 'https://images.pexels.com/photos/8566097/pexels-photo-8566097.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Cultural Program', caption: 'Kathakali performance' },
-  { id: 'g14', src: 'https://images.pexels.com/photos/5638817/pexels-photo-5638817.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Others', caption: 'Evening together' },
-  { id: 'g15', src: 'https://images.pexels.com/photos/37169804/pexels-photo-37169804.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Sports', caption: 'Bat in hand' },
-  { id: 'g16', src: 'https://images.pexels.com/photos/3937193/pexels-photo-3937193.jpeg?auto=compress&cs=tinysrgb&w=800', category: 'Others', caption: 'A warm dinner' },
+  {
+    id: 'g1',
+    src: `${import.meta.env.BASE_URL}IMG-20250905-WA0195.jpg`,
+    category: 'Tour',
+    caption: 'A memorable day together',
+    span: true,
+  },
+  {
+    id: 'g2',
+    src: `${import.meta.env.BASE_URL}IMG-20250906-WA0368.jpg`,
+    category: 'Tour',
+    caption: 'Exploring and making memories',
+  },
+  {
+    id: 'g3',
+    src: `${import.meta.env.BASE_URL}IMG-20260707-WA0034.jpg`,
+    category: 'Others',
+    caption: 'Together as ECO 35',
+    span: true,
+  },
 ];
-
-export const JOURNEY: JourneyPoint[] = [
-  { year: '2025', title: 'Our Beginning', description: 'The first time we gathered as a batch — new faces, new hopes, and the start of a shared journey.' },
-  { year: '2026', title: 'Growing Together', description: 'Late-night study sessions, first friendships, and the quiet confidence of finding our place.' },
-  { year: '2027', title: 'Creating Memories', description: 'Tours, cultural nights and endless conversations that turned classmates into family.' },
-  { year: '2028', title: 'Looking Ahead', description: 'A chapter still being written — one we will carry with us long after we leave these halls.' },
-];
-
 export const STATS = [
   { label: 'Batch Members', value: 59, suffix: '' },
   { label: 'Events', value: 15, suffix: '+' },
   { label: 'Memories', value: 500, suffix: '+' },
   { label: 'Family', value: 1, suffix: '' },
+];
+export const JOURNEY: JourneyPoint[] = [
+  {
+    year: '2025',
+    title: 'Our Beginning',
+    description:
+      'The first time we gathered as a batch — new faces, new hopes, and the start of a shared journey.',
+  },
+  {
+    year: '2026',
+    title: 'Growing Together',
+    description:
+      'Late-night study sessions, first friendships, and the quiet confidence of finding our place.',
+  },
+  {
+    year: '2027',
+    title: 'Creating Memories',
+    description:
+      'Tours, cultural nights and endless conversations that turned classmates into family.',
+  },
+  {
+    year: '2028',
+    title: 'Looking Ahead',
+    description:
+      'A chapter still being written — one we will carry with us long after we leave these halls.',
+  },
 ];
