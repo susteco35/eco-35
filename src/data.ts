@@ -225,7 +225,7 @@ export const GALLERY: GalleryPhoto[] = [
   },
   {
     id: 'g5',
-    src: `${import.meta.env.BASE_URL}IMG-20250905-WA0668.jpg"`,
+    src: `${import.meta.env.BASE_URL}IMG-20250905-WA0668.jpg`,
     category: 'Others',
     caption: 'Together All Girls as ECO 35',
     span: true,
